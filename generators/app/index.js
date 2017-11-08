@@ -35,6 +35,7 @@ module.exports = class extends Generator {
 		this.composeWith(require.resolve('../dockertools'), this.opts);
 		this.composeWith(require.resolve('../kubernetes'), this.opts);
 		this.composeWith(require.resolve('../deployment'), this.opts);
+		this.composeWith(require.resolve('../schematics'), this.opts);
 	}
 
 	prompting() {
