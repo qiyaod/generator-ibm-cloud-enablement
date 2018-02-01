@@ -117,6 +117,19 @@ describe('cloud-enablement:kubernetes', function () {
 				assertYmlContentExists(resources.requests.cpu, 'resources.requests.cpu');
 				assertYmlContentExists(resources.requests.memory, 'resources.requests.memory');
 			});
+                        it('has deployment.yaml with correct env settings for APM', () => {
+                                let rawdeploymentyml = fs.readFileSync(chartLocation + '/templates/deployment.yaml', 'utf8');
+                                let newdeploymentyml = rawdeploymentyml.replace('"+" "_"', '\\"+\\" \\"_\\"')
+                                        .replace('{{ if', '#').replace('{{ else', '#').replace('{{ end', '#');
+                                let deploymentyml = yml.safeLoad(newdeploymentyml);
+                                let spec = deploymentyml.spec.template.spec;
+                                assertYmlContent(spec.containers[0].env[1].name,'APPLICATION_NAME','spec.containers[0].env[1].name');
+                                assertYmlContent(spec.containers[0].env[2].name,'IBM_APM_SERVER_URL','spec.containers[0].env[2].name');
+                                assertYmlContent(spec.containers[0].env[3].name,'IBM_APM_KEYFILE','spec.containers[0].env[3].name');
+                                assertYmlContent(spec.containers[0].env[4].name,'IBM_APM_KEYFILE_PASSWORD','spec.containers[0].env[4].name');
+                                assertYmlContent(spec.containers[0].env[5].name,'IBM_APM_INGRESS_URL','spec.containers[0].env[5].name');
+                                assertYmlContent(spec.containers[0].env[6].name,'IBM_APM_ACCESS_TOKEN','spec.containers[0].env[6].name');
+                        });
 
 			it('has service.yaml with correct content', function () {
 				let rawserviceyml = fs.readFileSync(chartLocation + '/templates/service.yaml', 'utf8');
