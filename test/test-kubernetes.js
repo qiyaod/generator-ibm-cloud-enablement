@@ -20,6 +20,7 @@ const assert = require('yeoman-assert');
 const path = require('path');
 const fs = require('fs');
 const yml = require('js-yaml');
+const exec = require('child_process').exec;
 
 const scaffolderSample = require('./samples/scaffolder-sample');
 const scaffolderSampleNode = scaffolderSample.getJson('NODE');
@@ -63,9 +64,16 @@ function testOutput() {
 	it('has kubernetes config for HPA', function () {
 		assert.file(chartLocation + '/templates/hpa.yaml');
 	});
+	assertHpaYmlContent();
 
 	it('has kubernetes config for basedeployment', function () {
 		assert.file(chartLocation + '/templates/basedeployment.yaml');
+	});
+
+	it('has valid kubernetes chart when running helm lint', function(done) {
+		exec('helm lint ' + chartLocation + '/', {maxBuffer: 20 * 1024 * 1024}, (error, stdout) => {
+			error ? done(new Error(stdout)) : done();
+		})
 	});
 }
 
@@ -75,6 +83,19 @@ function assertYmlContent(actual, expected, label) {
 
 function assertYmlContentExists(actual, label) {
 	assert.notStrictEqual(actual, undefined, 'Expected ' + label + ' to be defined, it was not');
+}
+
+function assertHpaYmlContent() {
+	it('has templates/hpa.yaml file with correct contents', function() {
+		assert.fileContent(chartLocation + '/templates/hpa.yaml', '{{ if .Values.hpa.enabled }}');
+		assert.fileContent(chartLocation + '/templates/hpa.yaml', '{{ if and (eq .Capabilities.KubeVersion.Major "1") (ge .Capabilities.KubeVersion.Minor "8") }}');
+		assert.fileContent(chartLocation + '/templates/hpa.yaml', 'apiVersion: autoscaling/v2beta1\n{{ else }}\napiVersion: autoscaling/v2alpha1\n{{ end }}');
+		assert.fileContent(chartLocation + '/templates/hpa.yaml', 'name: "{{ .Chart.Name }}-hpa-policy"');
+		assert.fileContent(chartLocation + '/templates/hpa.yaml', 'minReplicas: {{ .Values.hpa.minReplicas }}');
+		assert.fileContent(chartLocation + '/templates/hpa.yaml', 'maxReplicas: {{ .Values.hpa.maxReplicas }}');
+		assert.fileContent(chartLocation + '/templates/hpa.yaml', 'targetAverageUtilization: {{ .Values.hpa.metrics.cpu.targetAverageUtilization }}');
+		assert.fileContent(chartLocation + '/templates/hpa.yaml', 'targetAverageUtilization: {{ .Values.hpa.metrics.memory.targetAverageUtilization }}');
+	});
 }
 
 describe('cloud-enablement:kubernetes', function () {
@@ -399,11 +420,6 @@ describe('cloud-enablement:kubernetes', function () {
 		});
 
 		testOutput();
-
-		it('Swift has Prometheus disabled', function () {
-			let values = yml.safeLoad(fs.readFileSync(chartLocation + '/values.yaml', 'utf8'));
-			assertYmlContent(values.prometheus.enabled, false, 'values.prometheus.enabled');
-		});
 	});
 
 	describe('kubernetes:app with Swift project and mongo deployment', function () {
@@ -460,28 +476,6 @@ describe('cloud-enablement:kubernetes', function () {
 			assert.fileContent(chartLocation + '/values.yaml', valuesMongoSwiftSample);
 		});
 
-	});
-
-
-	describe('kubernetes:app with Python project', function () {
-		beforeEach(function () {
-			return helpers.run(path.join(__dirname, '../generators/app'))
-				.inDir(path.join(__dirname, './tmp'))
-				.withOptions({bluemix: JSON.stringify(scaffolderSamplePython)})
-		});
-
-		testOutput();
-
-		it('Python has Prometheus enabled', function () {
-			let values = yml.safeLoad(fs.readFileSync(chartLocation + '/values.yaml', 'utf8'));
-			assertYmlContent(values.prometheus.enabled, true, 'values.prometheus.enabled');
-		});
-
-		it('Python has Prometheus configuration with correct content', function () {
-			assert.fileContent(chartLocation + '/templates/prometheus/prometheus-config.yaml', 'kind: ConfigMap');
-			assert.fileContent(chartLocation + '/templates/prometheus/prometheus-deployment.yaml', 'kind: Deployment');
-			assert.fileContent(chartLocation + '/templates/prometheus/prometheus-service.yaml', 'kind: Service');
-		});
 	});
 
 	describe('kubernetes:app with Python project and mongo deployment', function () {

@@ -2,6 +2,88 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.8.2"></a>
+## [0.8.2](https://github.com/ibm-developer/generator-ibm-cloud-enablement/compare/v0.8.1...v0.8.2) (2018-01-29)
+
+
+### Bug Fixes
+
+* changed python manage.py runserver to run ([218faa2](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/218faa2))
+
+
+
+<a name="0.8.1"></a>
+## [0.8.1](https://github.com/ibm-developer/generator-ibm-cloud-enablement/compare/v0.8.0...v0.8.1) (2018-01-26)
+
+
+### Bug Fixes
+
+* **templates:** Fix mvn install command in Java cli-config yml file ([d13472d](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/d13472d))
+
+
+
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/ibm-developer/generator-ibm-cloud-enablement/compare/v0.6.14...v0.8.0) (2018-01-24)
+
+
+### Features
+
+* Move to cli-config version 0.0.3 ([#216](https://github.com/ibm-developer/generator-ibm-cloud-enablement/issues/216)) ([86a8908](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/86a8908))
+* Removing Helm Charts for auto-Prometheus deploying ([f59c5f4](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/f59c5f4))
+
+
+
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/ibm-developer/generator-ibm-cloud-enablement/compare/v0.6.14...v0.7.0) (2018-01-17)
+
+
+### Features
+
+* Move to cli-config version 0.0.3 ([#216](https://github.com/ibm-developer/generator-ibm-cloud-enablement/issues/216)) ([86a8908](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/86a8908))
+
+
+
+<a name="0.6.14"></a>
+## [0.6.14](https://github.com/ibm-developer/generator-ibm-cloud-enablement/compare/v0.6.13...v0.6.14) (2018-01-10)
+
+
+### Bug Fixes
+
+* **templates:** Fix bx dev build failure for java app in Windows 10 ([3dcc178](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/3dcc178))
+
+
+
+<a name="0.6.13"></a>
+## [0.6.13](https://github.com/ibm-developer/generator-ibm-cloud-enablement/compare/v0.6.12...v0.6.13) (2018-01-08)
+
+
+### Bug Fixes
+
+* **prompt:** Fix prompting so chosen options are used in generation ([559fa50](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/559fa50))
+* **test:** Add helm linting to kubernetes tests ([d9690f7](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/d9690f7))
+
+
+
+<a name="0.6.12"></a>
+## [0.6.12](https://github.com/ibm-developer/generator-ibm-cloud-enablement/compare/v0.6.11...v0.6.12) (2018-01-03)
+
+
+### Bug Fixes
+
+* use bluemix.name for launch command on Swift ([1edcc50](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/1edcc50))
+
+
+
+<a name="0.6.11"></a>
+## [0.6.11](https://github.com/ibm-developer/generator-ibm-cloud-enablement/compare/v0.6.10...v0.6.11) (2018-01-02)
+
+
+### Bug Fixes
+
+* **templates:** Fix tag helper to always return a safe string so it will not be escaped by Handlebars ([29eb3f7](https://github.com/ibm-developer/generator-ibm-cloud-enablement/commit/29eb3f7))
+
+
+
 <a name="0.6.10"></a>
 ## [0.6.10](https://github.com/ibm-developer/generator-ibm-cloud-enablement/compare/v0.6.9...v0.6.10) (2017-12-14)
 
